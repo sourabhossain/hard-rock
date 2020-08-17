@@ -2,8 +2,7 @@ const apiUrl = "https://api.lyrics.ovh/";
 let extraInfo = {};
 
 //Input field and search buttons
-const songInput = document.getElementById("songInput");
-const searchButton = document.getElementById("searchButton");
+const songNameInput = document.getElementById("songNameInput");
 const fancyResult = document.getElementById("fancy-result");
 const singleLyrics = document.getElementById("single-lyrics");
 const lyricsContainer = document.getElementById("lyrics");
@@ -12,14 +11,14 @@ const lyricsTitle = document.querySelector("#single-lyrics h2");
 document.querySelector(".go-back").style.display = "none";
 document.querySelector("#hear-song").style.display = "none";
 
-// searchButton functionality
-searchButton.addEventListener("click", function () {
-    if (songInput.value) {
+// search button functionality
+document.querySelector(".search-btn").addEventListener("click", () => {
+    if (songNameInput.value) {
         fancyResult.innerHTML = "";
-        fetchMusic(songInput.value);
+        fetchMusic(songNameInput.value);
         toggleElement(singleLyrics, fancyResult);
-        extraInfo.songInput = songInput.value;
-        songInput.value = "";
+        extraInfo.songNameInput = songNameInput.value;
+        songNameInput.value = "";
     } else {
         alert("Please enter a song name.");
     }
@@ -44,21 +43,24 @@ function fetchMusic(title) {
             const albumName = music.album.title;
             const artistName = music.artist.name;
             const title = music.title;
+
             extraInfo.cover = music.album.cover;
             extraInfo.songLink = music.link;
 
             fancyResult.innerHTML += `<div class="single-result row align-items-center my-3 p-3">
-                                <div class="col-md-3">
-                                    <img src = '${extraInfo.cover}' alt='cover' >
-                                </div>
-                                <div class="col-md-6">
-                                    <h3 class="lyrics-name">${title}</h3>
-                                    <p class="author lead">Album by <span>${artistName}</span></p>
-                                </div>
-                                <div class="col-md-3 text-md-right text-center">
-                                    <button onclick="getLyrics('${artistName}','${title}')" class="btn btn-success">Get Lyrics</button>
-                                </div>
-                                </div>`;
+                                        <div class="col-md-3">
+                                            <img src = '${extraInfo.cover}' alt='cover' >
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <h3 class="lyrics-name">${title}</h3>
+                                            <p class="author lead">Album by <span>${artistName}</span></p>
+                                        </div>
+
+                                        <div class="col-md-3 text-md-right text-center">
+                                            <button onclick="getLyrics('${artistName}','${title}')" class="btn btn-success">Get Lyrics</button>
+                                        </div>
+                                      </div>`;
             if (i === 9) {
                 break;
             }
@@ -92,9 +94,9 @@ function getLyrics(artistName, title) {
         
         const goToButton = document.querySelector(".btn.go-back");
 
-        goToButton.onclick = function () {
+        goToButton.onclick = () => {
             fancyResult.innerHTML = "";
-            fetchMusic(extraInfo.songInput);
+            fetchMusic(extraInfo.songNameInput);
             toggleElement(singleLyrics, fancyResult);
         };
 
