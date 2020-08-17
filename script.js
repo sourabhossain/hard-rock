@@ -68,7 +68,7 @@ function fetchMusic(title) {
     });
 }
 
-// Load lyrics
+// load lyrics
 async function loadLyrics(artistName, title) {
     const res = await fetch(`${apiUrl}/v1/${artistName}/${title}`);
     const data = await res.json();
@@ -79,28 +79,26 @@ async function loadLyrics(artistName, title) {
 function getLyrics(artistName, title) {
     toggleElement(fancyResult, singleLyrics);
     const lyrics = loadLyrics(artistName, title);
-    const hearSongButton = document.getElementById("hear-song");
     let albumCover = document.getElementById("albumCover");
 
     lyrics.then((lyric) => {
         if (lyric.lyrics) {
             lyricsContainer.innerHTML = lyric.lyrics;
             albumCover.src = extraInfo.cover;
-            hearSongButton.href = extraInfo.songLink;
+
+            document.querySelector("#hear-song").href = extraInfo.songLink;
         } else {
             lyricsContainer.innerHTML = "Sorry! Lyrics not available.";
             albumCover.src = "";
         }
-        
-        const goToButton = document.querySelector(".btn.go-back");
 
-        goToButton.onclick = () => {
+        document.querySelector(".btn.go-back").onclick = () => {
             fancyResult.innerHTML = "";
             fetchMusic(extraInfo.songNameInput);
             toggleElement(singleLyrics, fancyResult);
         };
-
-        lyricsTitle.innerHTML = title + " - " + artistName;
+        
+        lyricsTitle.innerHTML = `${title} - ${artistName}`
     });
 
     document.querySelector(".go-back").style.display = "inline";
