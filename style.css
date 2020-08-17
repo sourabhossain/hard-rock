@@ -43,3 +43,11 @@ body {
     background: rgba(255, 255, 255, 0.2);
     border-radius: 15px;
 }
+
+.go-back {
+    margin-bottom: 15px;
+}
+
+#hear-song {
+    margin-bottom: 20px;
+}
