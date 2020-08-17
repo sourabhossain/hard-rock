@@ -36,6 +36,13 @@ function fetchMusic(title) {
 
     musics.then((musics) => {
         const musicList = musics.data;
+        
+        if (musicList.length < 1) {
+            fancyResult.innerHTML +=  `<div class="single-result row align-items-center my-3 p-3">
+                                          <h1>Sorry! Musics not available.</h1>
+                                       </div>`
+            return;
+        }
 
         for (let i = 0; i < musicList.length && i < 10; i++) {
             const music = musicList[i];
