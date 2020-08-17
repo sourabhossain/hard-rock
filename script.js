@@ -1,11 +1,10 @@
-const apiUrl = "https://api.lyrics.ovh/";
 let extraInfo = {};
 
-//Input field and search buttons
-const songNameInput = document.getElementById("songNameInput");
-const fancyResult = document.getElementById("fancy-result");
-const singleLyrics = document.getElementById("single-lyrics");
-const lyricsContainer = document.getElementById("lyrics");
+// input field and search buttons
+const songNameInput = document.querySelector("#songNameInput");
+const fancyResult = document.querySelector("#fancy-result");
+const singleLyrics = document.querySelector("#single-lyrics");
+const lyricsContainer = document.querySelector("#lyrics");
 const lyricsTitle = document.querySelector("#single-lyrics h2");
 
 document.querySelector(".go-back").style.display = "none";
@@ -26,7 +25,7 @@ document.querySelector(".search-btn").addEventListener("click", () => {
 
 // load data by song title
 async function loadSongByTitle(title) {
-    const res = await fetch(`${apiUrl}/suggest/${title}`);
+    const res = await fetch(`https://api.lyrics.ovh/suggest/${title}`);
     const data = await res.json();
     return data;
 }
@@ -38,7 +37,7 @@ function fetchMusic(title) {
     musics.then((musics) => {
         const musicList = musics.data;
 
-        for (let i = 0; i < musicList.length; i++) {
+        for (let i = 0; i < musicList.length && i < 10; i++) {
             const music = musicList[i];
             const albumName = music.album.title;
             const artistName = music.artist.name;
@@ -61,16 +60,13 @@ function fetchMusic(title) {
                                             <button onclick="getLyrics('${artistName}','${title}')" class="btn btn-success">Get Lyrics</button>
                                         </div>
                                       </div>`;
-            if (i === 9) {
-                break;
-            }
         }
     });
 }
 
 // load lyrics
 async function loadLyrics(artistName, title) {
-    const res = await fetch(`${apiUrl}/v1/${artistName}/${title}`);
+    const res = await fetch(`https://api.lyrics.ovh/v1/${artistName}/${title}`);
     const data = await res.json();
     return data;
 }
@@ -97,7 +93,7 @@ function getLyrics(artistName, title) {
             fetchMusic(extraInfo.songNameInput);
             toggleElement(singleLyrics, fancyResult);
         };
-        
+
         lyricsTitle.innerHTML = `${title} - ${artistName}`
     });
 
